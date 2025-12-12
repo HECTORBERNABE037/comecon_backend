@@ -3,9 +3,11 @@ from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 
 class User(AbstractUser):
+    # Desactivamos username
     username = None 
     email = models.EmailField(unique=True)
     
+    # Campos personalizados
     nickname = models.CharField(max_length=100, blank=True, null=True)
     role = models.CharField(max_length=20, choices=[('administrador', 'Administrador'), ('cliente', 'Cliente')], default='cliente')
     phone = models.CharField(max_length=20, blank=True, null=True)
@@ -17,7 +19,7 @@ class User(AbstractUser):
     allow_camera = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [] 
+    REQUIRED_FIELDS = [] # Sin username
 
     objects = CustomUserManager()
 

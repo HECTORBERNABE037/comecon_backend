@@ -4,47 +4,40 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import User, Card
 
 class CustomUserAdmin(UserAdmin):
-    # Conectamos los formularios
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User
     
-    # Configuraciones para usar Email en lugar de Username
-    username = None
+    # Configuración de lista
     ordering = ('email',)
     list_display = ('email', 'first_name', 'role', 'is_active', 'is_staff')
     list_filter = ('role', 'is_active')
     search_fields = ('email', 'first_name')
+    
+    username = None
 
-    # 1. PANTALLA DE CREACIÓN (Add User)
-    # Aquí es donde DEBEN estar password y password_2 para que se vean
+    # 1. PANTALLA DE CREACIÓN (Agregar Usuario)
+    # Ahora que 'password' y 'password_2' están en forms.py, esto funcionará
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': (
-                'email', 
-                'first_name', 
-                'last_name', 
-                'role', 
-                'password',    # <--- IMPORTANTE: Debe estar aquí
-                'password_2'   # <--- IMPORTANTE: Debe estar aquí
-            ),
+            'fields': ('email', 'first_name', 'last_name', 'role', 'password', 'password_2'),
         }),
     )
 
-    # 2. PANTALLA DE EDICIÓN (Change User)
-    # Aquí definimos cómo se ve un usuario ya creado
+    # 2. PANTALLA DE EDICIÓN
     fieldsets = (
-        ('Información de Cuenta', {'fields': ('email', 'password')}),
-        ('Datos Personales', {'fields': ('first_name', 'last_name', 'nickname', 'phone', 'gender', 'image')}),
-        ('Dirección', {'fields': ('country', 'address')}),
+        ('Credenciales', {'fields': ('email', 'password')}),
+        ('Información Personal', {'fields': ('first_name', 'last_name', 'nickname', 'phone', 'gender', 'image')}),
+        ('Ubicación', {'fields': ('country', 'address')}),
         ('Permisos', {'fields': ('role', 'is_active', 'is_staff', 'is_superuser')}),
-        ('Configuración', {'fields': ('allow_notifications', 'allow_camera')}),
+        ('Configuración App', {'fields': ('allow_notifications', 'allow_camera')}),
+        ('Fechas Importantes', {'fields': ('last_login', 'date_joined')}),
     )
 
 admin.site.register(User, CustomUserAdmin)
 
-# Registro simple para Tarjetas
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
     list_display = ('type', 'last_four', 'user', 'expiry_date')
+    search_fields = ('user__email', 'last_four')
