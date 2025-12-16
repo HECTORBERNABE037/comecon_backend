@@ -11,7 +11,6 @@ class CardSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     cards = CardSerializer(many=True, read_only=True)
     
-    # Creamos un campo 'name' virtual que no existe en BD
     name = serializers.SerializerMethodField()
 
     class Meta:
@@ -23,7 +22,6 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {'password': {'write_only': True}}
 
-    # Definimos cómo se llena ese campo 'name'
     def get_name(self, obj):
         # Si tiene nombre y apellido, los junta. Si no, usa "Sin Nombre"
         full_name = f"{obj.first_name} {obj.last_name}".strip()

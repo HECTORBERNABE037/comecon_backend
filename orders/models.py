@@ -26,7 +26,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT) # Si borras el producto, no borres el historial de ventas
     quantity = models.PositiveIntegerField(default=1)
     
-    # Guardamos el precio al momento de la compra (por si cambia después)
+    # Guardamos el precio al momento de la compra 
     price_at_moment = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):

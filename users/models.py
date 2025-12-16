@@ -7,7 +7,6 @@ class User(AbstractUser):
     username = None 
     email = models.EmailField(unique=True)
     
-    # Campos personalizados
     nickname = models.CharField(max_length=100, blank=True, null=True)
     role = models.CharField(max_length=20, choices=[('administrador', 'Administrador'), ('cliente', 'Cliente')], default='cliente')
     phone = models.CharField(max_length=20, blank=True, null=True)

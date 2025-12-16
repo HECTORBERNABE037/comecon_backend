@@ -10,7 +10,7 @@ from catalog.views import ProductViewSet, PromotionViewSet
 from orders.views import CartViewSet, OrderViewSet, CheckoutView
 
 # 1. Configuración del Router
-# El router crea automáticamente las URLs para los ViewSets (CRUDs completos)
+# El router crea automáticamente las URLs para los ViewSets 
 router = DefaultRouter()
 
 # Users App
@@ -35,10 +35,8 @@ urlpatterns = [
     path('api/profile/', UserProfileView.as_view(), name='profile'),
     path('api/checkout/', CheckoutView.as_view(), name='checkout'),
 
-    # --- Endpoints del Router (Incluye todas las rutas registradas arriba) ---
     path('api/', include(router.urls)),
 ]
 
-# 3. Configuración para servir imágenes en modo desarrollo (Local)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

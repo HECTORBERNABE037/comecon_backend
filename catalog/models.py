@@ -16,7 +16,7 @@ class Product(models.Model):
         return self.title
 
 class Promotion(models.Model):
-    # Relación 1 a 1: Un producto puede tener solo una promoción activa a la vez (por diseño simple)
+    # Relación 1 a 1: Un producto puede tener solo una promoción activa a la vez 
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='promotion')
     promotional_price = models.DecimalField(max_digits=10, decimal_places=2)
     start_date = models.DateField(null=True, blank=True)

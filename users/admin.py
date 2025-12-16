@@ -8,7 +8,6 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = User
     
-    # Configuración de lista
     ordering = ('email',)
     list_display = ('email', 'first_name', 'role', 'is_active', 'is_staff')
     list_filter = ('role', 'is_active')
@@ -16,8 +15,6 @@ class CustomUserAdmin(UserAdmin):
     
     username = None
 
-    # 1. PANTALLA DE CREACIÓN (Agregar Usuario)
-    # Ahora que 'password' y 'password_2' están en forms.py, esto funcionará
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -25,7 +22,6 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
-    # 2. PANTALLA DE EDICIÓN
     fieldsets = (
         ('Credenciales', {'fields': ('email', 'password')}),
         ('Información Personal', {'fields': ('first_name', 'last_name', 'nickname', 'phone', 'gender', 'image')}),

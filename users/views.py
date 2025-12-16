@@ -20,12 +20,10 @@ class LoginView(APIView):
         user = serializer.validated_data
         token, created = Token.objects.get_or_create(user=user)
         
-        # Devolvemos el token Y los datos del usuario (como espera tu App)
         user_data = UserSerializer(user).data
         return Response({'token': token.key, 'user': user_data})
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
-    # Ver y editar perfil propio
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
@@ -40,7 +38,6 @@ class CardViewSet(viewsets.ModelViewSet):
         return Card.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # Validar límite de 3 tarjetas
         if Card.objects.filter(user=self.request.user).count() >= 3:
             raise serializers.ValidationError("Límite de 3 tarjetas alcanzado.")
         serializer.save(user=self.request.user)

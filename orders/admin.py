@@ -3,7 +3,7 @@ from .models import Order, OrderItem, Cart
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    raw_id_fields = ['product'] # Para que no cargue un dropdown gigante si tienes muchos productos
+    raw_id_fields = ['product'] 
     extra = 0 # No mostrar filas vacías extra
 
 @admin.register(Order)

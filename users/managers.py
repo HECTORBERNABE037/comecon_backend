@@ -1,10 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 
 class CustomUserManager(BaseUserManager):
-    """
-    Manager personalizado para usar Email como identificador único
-    en lugar de username.
-    """
+
     def create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError('El email es obligatorio')

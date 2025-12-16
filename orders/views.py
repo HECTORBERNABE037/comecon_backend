@@ -51,7 +51,7 @@ class CheckoutView(views.APIView):
         if not cart_items.exists():
             return Response({"error": "El carrito está vacío"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 2. Calcular total (Validación de servidor)
+        # 2. Calcular total 
         total = 0
         order_items_to_create = []
         
@@ -66,7 +66,7 @@ class CheckoutView(views.APIView):
             
             order_items_to_create.append(
                 OrderItem(
-                    order=None, # Se asigna después
+                    order=None, 
                     product=item.product,
                     quantity=item.quantity,
                     price_at_moment=price
@@ -82,7 +82,7 @@ class CheckoutView(views.APIView):
             delivery_time="Calculando..."
         )
 
-        # 4. Asignar items a la orden y guardar masivamente
+        # 4. Asignar items a la orden y guardar 
         for item in order_items_to_create:
             item.order = order
         

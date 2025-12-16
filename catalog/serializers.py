@@ -7,7 +7,7 @@ class PromotionSerializer(serializers.ModelSerializer):
         fields = ['id', 'promotional_price', 'start_date', 'end_date', 'visible']
 
 class ProductSerializer(serializers.ModelSerializer):
-    # Incluimos la promoción anidada (si existe) para facilitar el frontend
+    # Incluimos la promoción anidada 
     promotion = PromotionSerializer(read_only=True)
     
     # Campo calculado para saber el precio activo (Base vs Promo)

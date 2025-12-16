@@ -17,11 +17,10 @@ class CustomUserCreationForm(forms.ModelForm):
         password_2 = cleaned_data.get("password_2")
 
         if password and password_2:
-            # 1. Validar que coincidan
+            # Validar 
             if password != password_2:
                 self.add_error('password_2', "Las contraseñas no coinciden")
             
-            # 2. Validar seguridad (longitud, números, etc.) usando las reglas de Django
             try:
                 validate_password(password, self.instance)
             except forms.ValidationError as error:
@@ -38,7 +37,6 @@ class CustomUserCreationForm(forms.ModelForm):
         return user
 
 class CustomUserChangeForm(forms.ModelForm):
-    # Formulario para editar usuario (muestra la contraseña encriptada como read-only)
     password = ReadOnlyPasswordHashField(
         label="Contraseña",
         help_text="Las contraseñas se guardan encriptadas. Para cambiarla, usa el enlace de arriba."
