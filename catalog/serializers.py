@@ -2,9 +2,11 @@ from rest_framework import serializers
 from .models import Product, Promotion
 
 class PromotionSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+
     class Meta:
         model = Promotion
-        fields = ['id', 'promotional_price', 'start_date', 'end_date', 'visible']
+        fields = ['id', 'product', 'promotional_price', 'start_date', 'end_date', 'description', 'visible']
 
 class ProductSerializer(serializers.ModelSerializer):
     # Campo calculado para ver si hay promo activa
@@ -12,19 +14,20 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        # CORRECCIÓN AQUÍ: Cambiamos 'is_active' por 'visible'
         fields = ['id', 'title', 'description', 'price', 'image', 'category', 'promotion', 'visible']
 
     def get_promotion(self, obj):
+        # TRAER LA PRIMERA, SIN IMPORTAR SI ES VISIBLE O NO
         promo = Promotion.objects.filter(product=obj).first()
+        
         if promo:
             return {
                 'id': promo.id,
-                'discount_price': promo.promotional_price, # Asegúrate que coincida con tu modelo
+                'discount_price': promo.promotional_price,
                 'start_date': promo.start_date,
                 'end_date': promo.end_date,
-                'description': promo.description, # ✅ Ahora esto funcionará
-                'visible': promo.visible
+                'description': promo.description,
+                'visible': promo.visible 
             }
         return None
 

@@ -40,6 +40,7 @@ urlpatterns = [
     path('api/check-email/', CheckEmailView.as_view(), name='check_email'),
     path('api/reset-password/', ResetPasswordView.as_view(), name='reset_password'),
     
+    #perfil y pagos
     path('api/profile/', UserProfileView.as_view(), name='profile'),
     path('api/checkout/', CheckoutView.as_view(), name='checkout'),
 

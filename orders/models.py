@@ -3,7 +3,6 @@ from django.conf import settings
 from catalog.models import Product # Importamos el modelo de Producto
 
 class Order(models.Model):
-    # Estados exactos que definiste en el Frontend (en español)
     STATUS_CHOICES = (
         ('Pendiente', 'Pendiente'),
         ('En proceso', 'En proceso'),
@@ -25,7 +24,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.PROTECT) # Si borras el producto, no borres el historial de ventas
+    product = models.ForeignKey(Product, on_delete=models.PROTECT) # Si se borra el producto, no se borra el historial de ventas
     quantity = models.PositiveIntegerField(default=1)
     price_at_moment = models.DecimalField(max_digits=10, decimal_places=2)
     

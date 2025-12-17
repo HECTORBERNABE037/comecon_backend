@@ -43,7 +43,7 @@ class CardViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 class CheckEmailView(APIView):
-    """ Verifica si un email existe en la base de datos (Paso 1) """
+    """ Verifica si el email existe en la base de datos"""
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -56,7 +56,6 @@ class CheckEmailView(APIView):
         return Response({'exists': exists})
 
 class ResetPasswordView(APIView):
-    """ Actualiza la contraseña recibiendo email y nueva pass (Paso 3) """
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -67,7 +66,6 @@ class ResetPasswordView(APIView):
             return Response({'error': 'Datos incompletos'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Buscamos al usuario por el email validado anteriormente
             user = User.objects.get(email=email)
             user.set_password(new_password) # Hashea y actualiza la contraseña
             user.save()
