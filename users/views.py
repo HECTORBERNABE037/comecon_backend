@@ -41,3 +41,36 @@ class CardViewSet(viewsets.ModelViewSet):
         if Card.objects.filter(user=self.request.user).count() >= 3:
             raise serializers.ValidationError("Límite de 3 tarjetas alcanzado.")
         serializer.save(user=self.request.user)
+
+class CheckEmailView(APIView):
+    """ Verifica si un email existe en la base de datos (Paso 1) """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({'error': 'Email requerido'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Simplemente revisamos si existe
+        exists = User.objects.filter(email=email).exists()
+        return Response({'exists': exists})
+
+class ResetPasswordView(APIView):
+    """ Actualiza la contraseña recibiendo email y nueva pass (Paso 3) """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        new_password = request.data.get('new_password')
+
+        if not email or not new_password:
+            return Response({'error': 'Datos incompletos'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Buscamos al usuario por el email validado anteriormente
+            user = User.objects.get(email=email)
+            user.set_password(new_password) # Hashea y actualiza la contraseña
+            user.save()
+            return Response({'success': True, 'message': 'Contraseña actualizada'})
+        except User.DoesNotExist:
+            return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
