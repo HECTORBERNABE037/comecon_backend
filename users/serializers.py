@@ -29,6 +29,14 @@ class UserSerializer(serializers.ModelSerializer):
             **validated_data
         )
         return user
+    
+    def update(self, instance, validated_data): # CORRECION DEL BUG DE ACTUALIZACION DEL NOMBRE DEL PERFIL
+        name = validated_data.pop('name', None)
+        if name is not None:
+            instance.first_name = name
+            
+        # Llamamos al método update original para que guarde el resto de los campos
+        return super().update(instance, validated_data)
         
     def to_representation(self, instance):
         ret = super().to_representation(instance)
